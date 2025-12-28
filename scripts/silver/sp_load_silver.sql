@@ -20,8 +20,10 @@ Usage Example:
 
 CREATE OR ALTER PROCEDURE silver.load_silver AS
 BEGIN
+	-- Start a transaction
+	BEGIN TRANSACTION;
     DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME; 
-    BEGIN TRY
+    BEGIN TRY  ---Error Handling Start
         SET @batch_start_time = GETDATE();
         PRINT '================================================';
         PRINT 'Loading Silver Layer';
@@ -67,7 +69,7 @@ BEGIN
 				ROW_NUMBER() OVER (PARTITION BY cst_id ORDER BY cst_create_date DESC) AS flag_last
 			FROM bronze.crm_cust_info
 			WHERE cst_id IS NOT NULL
-		) t
+		) as t
 		WHERE flag_last = 1; -- Select the most recent record per customer
 		SET @end_time = GETDATE();
         PRINT '>> Load Duration: ' + CAST(DATEDIFF(SECOND, @start_time, @end_time) AS NVARCHAR) + ' seconds';
@@ -179,8 +181,8 @@ BEGIN
 				ELSE bdate
 			END AS bdate, -- Set future birthdates to NULL
 			CASE
-				WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE') THEN 'Female'
-				WHEN UPPER(TRIM(gen)) IN ('M', 'MALE') THEN 'Male'
+				WHEN UPPER(TRIM(gen)) IN ('F', 'FEMALE','Female') THEN 'Female'
+				WHEN UPPER(TRIM(gen)) IN ('M', 'MALE', 'Male') THEN 'Male'
 				ELSE 'n/a'
 			END AS gen -- Normalize gender values and handle unknown cases
 		FROM bronze.erp_cust_az12;
@@ -240,14 +242,27 @@ BEGIN
 		PRINT 'Loading Silver Layer is Completed';
         PRINT '   - Total Load Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
 		PRINT '=========================================='
-		
-	END TRY
-	BEGIN CATCH
+
+	--Commit the transaction if all operations succeed
+	COMMIT TRANSACTION;
+
+	END TRY     ---- Error Handling End
+
+	BEGIN CATCH  ---- Catching Errors Starts Here
 		PRINT '=========================================='
 		PRINT 'ERROR OCCURED DURING LOADING BRONZE LAYER'
 		PRINT 'Error Message' + ERROR_MESSAGE();
 		PRINT 'Error Message' + CAST (ERROR_NUMBER() AS NVARCHAR);
 		PRINT 'Error Message' + CAST (ERROR_STATE() AS NVARCHAR);
 		PRINT '=========================================='
-	END CATCH
+
+	-- Rollback the transaction in case of error
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION;
+        
+    -- Optionally re-throw the error
+    THROW;
+
+	END CATCH    ----- Catching Errors Ends Here
+
 END

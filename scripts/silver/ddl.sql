@@ -14,13 +14,13 @@ IF OBJECT_ID('silver.crm_cust_info', 'U') IS NOT NULL
 GO
 
 CREATE TABLE silver.crm_cust_info (
-    cst_id             INT,
-    cst_key            NVARCHAR(50),
-    cst_firstname      NVARCHAR(50),
-    cst_lastname       NVARCHAR(50),
-    cst_marital_status NVARCHAR(50),
-    cst_gndr           NVARCHAR(50),
-    cst_create_date    DATE,
+    cst_id int,
+    cst_key nvarchar(50),
+    cst_firstname varchar(50),
+    cst_lastname varchar(50),
+    cst_marital_status varchar(20),
+    cst_gndr varchar(10),
+    cst_create_date date,
     dwh_create_date    DATETIME2 DEFAULT GETDATE()
 );
 GO
@@ -66,7 +66,7 @@ GO
 
 CREATE TABLE silver.erp_loc_a101 (
     cid             NVARCHAR(50),
-    cntry           NVARCHAR(50),
+    cntry           VARCHAR(50),
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
@@ -78,7 +78,7 @@ GO
 CREATE TABLE silver.erp_cust_az12 (
     cid             NVARCHAR(50),
     bdate           DATE,
-    gen             NVARCHAR(50),
+    gen             VARCHAR(10),
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO
@@ -91,7 +91,7 @@ CREATE TABLE silver.erp_px_cat_g1v2 (
     id              NVARCHAR(50),
     cat             NVARCHAR(50),
     subcat          NVARCHAR(50),
-    maintenance     NVARCHAR(50),
+    maintenance     NVARCHAR(10),
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO

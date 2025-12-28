@@ -18,8 +18,11 @@ Usage Example:
 */
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN
+	-- Start a transaction
+	BEGIN TRANSACTION;
+
 	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME; 
-	BEGIN TRY
+	BEGIN TRY  ---Error Handling Start
 		SET @batch_start_time = GETDATE();
 		PRINT '================================================';
 		PRINT 'Loading Bronze Layer';
@@ -129,13 +132,27 @@ BEGIN
 		PRINT 'Loading Bronze Layer is Completed';
         PRINT '   - Total Load Duration: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
 		PRINT '=========================================='
-	END TRY
-	BEGIN CATCH
+
+	--Commit the transaction if all operations succeed
+	COMMIT TRANSACTION;
+
+	END TRY   ---- Error Handling End
+
+	BEGIN CATCH   ---- Catching Errors Starts Here
 		PRINT '=========================================='
 		PRINT 'ERROR OCCURED DURING LOADING BRONZE LAYER'
 		PRINT 'Error Message' + ERROR_MESSAGE();
 		PRINT 'Error Message' + CAST (ERROR_NUMBER() AS NVARCHAR);
 		PRINT 'Error Message' + CAST (ERROR_STATE() AS NVARCHAR);
 		PRINT '=========================================='
-	END CATCH
+
+	-- Rollback the transaction in case of error
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION;
+        
+    -- Optionally re-throw the error
+    THROW;
+		
+	END CATCH    ----- Catching Errors Ends Here
+
 END
