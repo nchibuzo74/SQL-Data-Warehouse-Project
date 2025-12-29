@@ -53,9 +53,9 @@ CREATE TABLE silver.crm_sales_details (
     sls_order_dt    DATE,
     sls_ship_dt     DATE,
     sls_due_dt      DATE,
-    sls_sales       INT,
+    sls_sales       DECIMAL(19,2),
     sls_quantity    INT,
-    sls_price       INT,
+    sls_price       DECIMAL(19,2),
     dwh_create_date DATETIME2 DEFAULT GETDATE()
 );
 GO

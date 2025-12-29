@@ -18,6 +18,8 @@ Usage Example:
 ===============================================================================
 */
 
+---drop procedure silver.load_silver;
+
 CREATE OR ALTER PROCEDURE silver.load_silver AS
 BEGIN
 	-- Start a transaction

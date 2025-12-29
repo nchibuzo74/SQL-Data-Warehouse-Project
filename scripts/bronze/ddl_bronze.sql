@@ -16,10 +16,10 @@ GO
 CREATE table bronze.crm_cust_info(
     cst_id int,
     cst_key nvarchar(50),
-    cst_firstname varchar(50),
-    cst_lastname varchar(50),
-    cst_marital_status varchar(20),
-    cst_gndr varchar(10),
+    cst_firstname nvarchar(50),
+    cst_lastname nvarchar(50),
+    cst_marital_status nvarchar(20),
+    cst_gndr nvarchar(10),
     cst_create_date date
 );
 GO
