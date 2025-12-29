@@ -1,0 +1,294 @@
+# ============================================================================
+# .gitignore for SQL-DATA-WAREHOUSE-PROJECT
+# ============================================================================
+# Custom .gitignore based on your project structure
+# ============================================================================
+
+# ============================================================================
+# 1. DATA FILES - Never commit actual datasets!
+# ============================================================================
+
+# All CSV files in datasets folder
+/datasets/**/*.csv
+/datasets/**/*.tsv
+/datasets/**/*.txt
+/datasets/**/*.dat
+
+# Excel files
+/datasets/**/*.xls
+/datasets/**/*.xlsx
+/datasets/**/*.xlsm
+
+# Keep the datasets folder structure but not the actual data files
+!/datasets/source_crm/.gitkeep
+!/datasets/source_erp/.gitkeep
+
+# Compressed data files
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# ============================================================================
+# 2. SENSITIVE INFORMATION - Security first!
+# ============================================================================
+
+# Connection strings and credentials
+*connection*.sql
+*credentials*.txt
+*password*.txt
+secrets.sql
+.env
+.env.local
+
+# Any files with "secret" or "private" in name
+*secret*
+*private*
+
+# Configuration files with sensitive data
+config.json
+settings.json
+!config.example.json
+
+# ============================================================================
+# 3. LOGS AND TEMPORARY FILES
+# ============================================================================
+
+# Log files
+*.log
+*.log.*
+logs/
+log/
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+*.swp
+*~
+
+# Error files from BULK INSERT
+*.error
+*.error.*
+*.Error.Txt
+
+# ============================================================================
+# 4. DATABASE FILES - Never commit database files!
+# ============================================================================
+
+# SQL Server database files
+*.mdf
+*.ldf
+*.ndf
+*.bak
+*.trn
+*.dmp
+
+# SQLite
+*.sqlite
+*.db
+*.sqlite3
+
+# ============================================================================
+# 5. IDE AND EDITOR FILES
+# ============================================================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+
+# SQL Server Management Studio
+*.sqlproj.user
+*.dbmdl
+*.jfm
+
+# JetBrains (DataGrip)
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ============================================================================
+# 6. OPERATING SYSTEM FILES
+# ============================================================================
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+._*
+
+# Linux
+.directory
+
+# ============================================================================
+# 7. BACKUP AND OUTPUT FILES
+# ============================================================================
+
+# Backup files
+*.bak
+*.backup
+*.old
+*_backup
+*_old
+
+# Test outputs
+/tests/output/
+/tests/results/
+
+# ============================================================================
+# 8. SCRIPT-SPECIFIC IGNORES
+# ============================================================================
+
+# Keep all scripts but ignore any test/scratch files
+/scripts/**/*_test.sql
+/scripts/**/*_scratch.sql
+/scripts/**/*_temp.sql
+/scripts/**/*_draft.sql
+
+# Ignore any generated scripts
+/scripts/**/generated_*.sql
+
+# ============================================================================
+# 9. DOCUMENTATION DRAFTS
+# ============================================================================
+
+# Draft documents
+*_draft.*
+*_WIP.*
+TODO.txt
+notes.txt
+
+# ============================================================================
+# 10. PROJECT-SPECIFIC PATHS
+# ============================================================================
+
+# Based on your structure, keep these folders but ignore certain contents:
+
+# Bronze layer - keep scripts, ignore data
+/scripts/bronze/**/*.error
+/scripts/bronze/**/*.log
+
+# Silver layer - keep scripts, ignore data
+/scripts/silver/**/*.error
+/scripts/silver/**/*.log
+
+# Gold layer - keep scripts, ignore data
+/scripts/gold/**/*.error
+/scripts/gold/**/*.log
+
+# Tests - keep test scripts, ignore test results
+/tests/test_data/
+/tests/test_results/
+
+# Docs - keep documentation, ignore drafts
+/docs/**/*_draft.*
+/docs/**/*_old.*
+
+# ============================================================================
+# EXCEPTIONS - Files to KEEP (force include with !)
+# ============================================================================
+
+# Keep important SQL scripts
+!create_database_and_schema.sql
+!validation.sql
+
+# Keep README files
+!README.md
+!**/README.md
+
+# Keep example/template files
+!**/example_*.csv
+!**/template_*.sql
+!**/.gitkeep
+
+# Keep small reference data (if you have any)
+# Uncomment if you have small lookup tables to commit
+# !/datasets/reference_data/*.csv
+
+# Keep documentation
+!*.md
+!/docs/**/*.md
+
+# ============================================================================
+# YOUR PROJECT STRUCTURE (for reference)
+# ============================================================================
+#
+# SQL-DATA-WAREHOUSE-PROJECT/
+# ├── .vscode/              → IGNORED (IDE settings)
+# ├── datasets/             → KEEP structure, IGNORE data files
+# ├── docs/                 → KEEP docs, IGNORE drafts
+# ├── scripts/              → KEEP scripts, IGNORE temp files
+# │   ├── bronze/           → KEEP scripts
+# │   ├── gold/             → KEEP scripts
+# │   ├── silver/           → KEEP scripts
+# │   └── tests/            → KEEP scripts, IGNORE results
+# ├── .gitignore            → KEEP (this file!)
+# ├── create_database_and_schema.sql → KEEP
+# ├── validation.sql        → KEEP
+# └── README.md             → KEEP
+#
+# ============================================================================
+
+# ============================================================================
+# QUICK REFERENCE
+# ============================================================================
+#
+# CHECK IF A FILE IS IGNORED:
+#   git check-ignore -v filename
+#
+# SEE ALL IGNORED FILES:
+#   git status --ignored
+#
+# IF YOU ALREADY COMMITTED A FILE THAT SHOULD BE IGNORED:
+#   git rm --cached path/to/file
+#   git commit -m "Remove file from tracking"
+#
+# FORCE ADD AN IGNORED FILE (if you really need to):
+#   git add -f path/to/file
+#
+# ============================================================================
+
+# ============================================================================
+# BEST PRACTICES FOR YOUR PROJECT
+# ============================================================================
+#
+# ✅ DO COMMIT:
+#   - All .sql scripts (your ETL code)
+#   - Documentation (.md files)
+#   - create_database_and_schema.sql
+#   - validation.sql
+#   - README.md
+#   - This .gitignore file
+#   - Empty .gitkeep files to preserve folder structure
+#
+# ❌ DON'T COMMIT:
+#   - CSV files in /datasets/
+#   - Database files (.mdf, .ldf, .bak)
+#   - Connection strings with passwords
+#   - Error files from BULK INSERT
+#   - IDE-specific settings (.vscode/)
+#   - Test data or results
+#   - Temporary/scratch files
+#
+# 📝 OPTIONAL TO COMMIT:
+#   - Small reference/lookup data (countries, states, etc.)
+#   - Sample data files (clearly marked as examples)
+#   - Configuration templates (without real credentials)
+#
+# ============================================================================
