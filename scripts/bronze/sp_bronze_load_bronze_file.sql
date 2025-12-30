@@ -47,10 +47,10 @@ Usage Examples:
         @AppendMode = 1;  
 
     -- Append new data to existing table (ERP category table)
-    EXEC bronze.load_bronze_file 
-        @FilePath = 'C:\Chibz\VS Code Project\SQL Data Warehouse Project\datasets\source_erp\PX_CAT_G1V2_one.csv',
-        @TableName = 'erp_px_cat_g1v2',
-        @AppendMode = 1;              
+  --  EXEC bronze.load_bronze_file 
+    --    @FilePath = 'C:\Chibz\VS Code Project\SQL Data Warehouse Project\datasets\source_erp\PX_CAT_G1V2_one.csv',
+     --   @TableName = 'erp_px_cat_g1v2',
+      --  @AppendMode = 1;              
 
     -- Replace all data in table (full refresh example)
     EXEC bronze.load_bronze_file 
